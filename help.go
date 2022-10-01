@@ -44,7 +44,8 @@ func (e *Executor) printTasks(listAll bool) {
 	// Format in tab-separated columns with a tab stop of 8.
 	w := tabwriter.NewWriter(e.Stdout, 0, 8, 0, '\t', 0)
 	for _, task := range tasks {
-		fmt.Fprintf(w, "* %s: \t%s\n", task.Name(), task.Desc)
+		taskNames := append([]string{task.Name()}, task.Aliases...)
+		fmt.Fprintf(w, "* %s: \t%s\n", strings.Join(taskNames, "|"), task.Desc)
 	}
 	w.Flush()
 }
