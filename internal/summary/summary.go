@@ -1,6 +1,7 @@
 package summary
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/go-task/task/v3/internal/logger"
@@ -28,6 +29,7 @@ func PrintTask(l *logger.Logger, t *taskfile.Task) {
 	printTaskName(l, t)
 	printTaskDescribingText(t, l)
 	printTaskDependencies(l, t)
+	printTaskAliases(l, t)
 	printTaskCommands(l, t)
 }
 
@@ -56,8 +58,23 @@ func printTaskSummary(l *logger.Logger, t *taskfile.Task) {
 }
 
 func printTaskName(l *logger.Logger, t *taskfile.Task) {
-	l.Outf(logger.Default, "task: %s", t.Name())
+	var aliases string
+	if len(t.Aliases) > 0 {
+		aliases = fmt.Sprintf(" (%s)", strings.Join(t.Aliases, " | "))
+	}
+	l.Outf(logger.Default, "task: %s%s", t.Name(), aliases)
 	l.Outf(logger.Default, "")
+}
+
+func printTaskAliases(l *logger.Logger, t *taskfile.Task) {
+	if len(t.Aliases) == 0 {
+		return
+	}
+	l.Outf(logger.Default, "")
+	l.Outf(logger.Default, "aliases:")
+	for _, alias := range t.Aliases {
+		l.Outf(logger.Default, " - %s", alias)
+	}
 }
 
 func hasDescription(t *taskfile.Task) bool {
