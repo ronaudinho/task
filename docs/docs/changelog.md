@@ -5,6 +5,10 @@ sidebar_position: 6
 
 # Changelog
 
+## Unreleased
+
+- Add ability to set `aliases` for tasks and namespaces (#879).
+
 ## v3.16.0 - 2022-09-29
 
 - Add `npm` as new installation method: `npm i -g @go-task/cli`
